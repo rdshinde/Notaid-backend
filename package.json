@@ -1,0 +1,33 @@
+{
+  "name": "notaid-backend",
+  "version": "1.0.0",
+  "description": "Express backend for the modern note taking app.",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "heroku-postbuild": "npm install",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rdshinde/Notaid-backend.git"
+  },
+  "keywords": [],
+  "author": "Rishikesh Shinde",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rdshinde/Notaid-backend/issues"
+  },
+  "homepage": "https://github.com/rdshinde/Notaid-backend#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "jsonwebtoken": "^8.5.1",
+    "jwt-decode": "^3.1.2",
+    "jwt-encode": "^1.0.1",
+    "mongoose": "^6.5.2",
+    "nodemon": "^2.0.19",
+    "uuid": "^8.3.2"
+  }
+}
