@@ -73,6 +73,40 @@ notesV1
       });
     }
   })
+  .post(authVerify, async (req, res) => {
+    try {
+      const { id } = req?.params;
+      const { userId } = req.user;
+      const note = req.body;
+      const user = await User.findById(userId);
+      let noteToUpdate = user.allNotes.notes.find((note) => note._id === id);
+      if (user) {
+        if (noteToUpdate) {
+          noteToUpdate = { ...note, ...noteToUpdate };
+          const updatedNotes = user.allNotes.notes.map((note) => {
+            if (note._id === id) {
+              return noteToUpdate;
+            } else {
+              return note;
+            }
+          });
+          user.allNotes.notes = updatedNotes;
+          const updatedUser = await user.save();
+          res
+            .status(201)
+            .json({ success: true, data: { ...updatedUser.allNotes } });
+        } else {
+          res.status(404).json({ success: false, message: "Note not found!" });
+        }
+      }
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({
+        success: false,
+        message: "Something went wrong.",
+      });
+    }
+  })
   .delete(authVerify, async (req, res) => {
     try {
       const { id } = req?.params;
