@@ -54,8 +54,11 @@ archiveV1.route("/:id").delete(authVerify, async (req, res) => {
     const { userId } = req.user;
     const user = await User.findById(userId);
     if (user) {
+      const note = user.archive.notes.find((note) => note._id === id);
       const updatedNotes = user.archive.notes.filter((note) => note._id !== id);
       user.archive.notes = updatedNotes;
+      user.trash.notes.push(note);
+      user.trash.qty = user.trash.notes.length;
       user.archive.qty = user.archive.notes.length;
       const updatedUser = await user.save();
       res.status(201).json({

@@ -84,6 +84,8 @@ notesV1
           const updatedNotes = user.allNotes.notes.filter(
             (note) => note._id !== id
           );
+          user.trash.notes.push(userNote);
+          user.trash.qty = user.trash.notes.length;
           user.allNotes.notes = updatedNotes;
           user.allNotes.qty = updatedNotes.length;
           const updatedUser = await user.save();
