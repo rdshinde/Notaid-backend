@@ -16,10 +16,13 @@ const { connectDB } = require("./db/db.connect.js");
 connectDB();
 
 const { DocsObj } = require("./utils");
+const { authV1 } = require("./routes/auth.routes");
 
 app.get("/", (req, res) => {
   res.json({ ...DocsObj });
 });
+
+app.use("/auth", authV1);
 
 /**
  * 404 Route Handler
