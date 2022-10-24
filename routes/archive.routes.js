@@ -3,7 +3,6 @@ const archiveV1 = express.Router();
 const { User } = require("../models/user.model");
 const { v4: uuid } = require("uuid");
 const { authVerify } = require("../middlewares/auth.middleware");
-const { notesV1 } = require("./notes.routes");
 
 archiveV1.route("/").get(authVerify, async (req, res) => {
   try {
@@ -26,7 +25,7 @@ archiveV1.route("/").get(authVerify, async (req, res) => {
     });
   }
 });
-notesV1.route("/:id").get(authVerify, async (req, res) => {
+archiveV1.route("/:id").get(authVerify, async (req, res) => {
   try {
     const { id } = req?.params;
     const { userId } = req.user;
