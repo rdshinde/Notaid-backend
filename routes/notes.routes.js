@@ -84,14 +84,24 @@ notesV1
           const updatedNotes = user.allNotes.notes.filter(
             (note) => note._id !== id
           );
+          const updatedArchiveNotes = user.archive.notes.filter(
+            (note) => note._id !== id
+          );
+          user.archive.notes = updatedArchiveNotes;
           user.trash.notes.push(userNote);
           user.trash.qty = user.trash.notes.length;
           user.allNotes.notes = updatedNotes;
           user.allNotes.qty = updatedNotes.length;
+          user.trash.qty = user.trash.notes.length;
+          user.archive.qty = user.archive.notes.length;
           const updatedUser = await user.save();
-          res
-            .status(200)
-            .json({ success: true, data: { ...updatedUser.allNotes } });
+          res.status(200).json({
+            success: true,
+            data: {
+              notes: updatedUser.allNotes,
+              trash: updatedUser.trash,
+            },
+          });
         } else {
           res.status(404).json({ success: false, message: "Note not found!" });
         }

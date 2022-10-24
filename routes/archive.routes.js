@@ -56,6 +56,10 @@ archiveV1.route("/:id").delete(authVerify, async (req, res) => {
     if (user) {
       const note = user.archive.notes.find((note) => note._id === id);
       const updatedNotes = user.archive.notes.filter((note) => note._id !== id);
+      const updatedAllNotes = user.allNotes.notes.filter(
+        (note) => note._id !== id
+      );
+      user.allNotes.notes = updatedAllNotes;
       user.archive.notes = updatedNotes;
       user.trash.notes.push(note);
       user.trash.qty = user.trash.notes.length;
@@ -64,7 +68,9 @@ archiveV1.route("/:id").delete(authVerify, async (req, res) => {
       res.status(201).json({
         success: true,
         data: {
+          notes: updatedUser.allNotes,
           archive: updatedUser.archive,
+          trash: updatedUser.trash,
         },
       });
     }
@@ -85,21 +91,13 @@ archiveV1.route("/:id").post(authVerify, async (req, res) => {
     if (user) {
       const note = user.allNotes.notes.find((note) => note._id === id);
 
-      const updatedAllNotes = user.allNotes.notes.map((note) => {
-        if (note._id === id) {
-          return {
-            ...note,
-            isArchived: true,
-          };
-        } else {
-          return note;
-        }
-      });
-      console.log(note);
+      const updatedAllNotes = user.allNotes.notes.filter(
+        (note) => note._id !== id
+      );
       note.isArchived = true;
       user.archive.notes.push(note);
-      console.log("archive", user.archive);
       user.allNotes.notes = updatedAllNotes;
+      user.allNotes.qty = user.allNotes.notes.length;
       user.archive.qty = user.archive.notes.length;
       const updatedUser = await user.save();
       res.status(201).json({
@@ -124,22 +122,15 @@ archiveV1.route("/restore/:id").post(authVerify, async (req, res) => {
     const { id } = req?.params;
     const { userId } = req.user;
     const user = await User.findById(userId);
+
     if (user) {
+      const note = user.archive.notes.find((note) => note._id === id);
       const updatedArchiveNotes = user.archive.notes.filter(
         (note) => note._id !== id
       );
-      const updatedAllNotes = user.allNotes.notes.map((note) => {
-        if (note._id === id) {
-          return {
-            ...note,
-            isArchived: false,
-          };
-        } else {
-          return note;
-        }
-      });
+      user.allNotes.notes.push(note);
       user.archive.notes = updatedArchiveNotes;
-      user.allNotes.notes = updatedAllNotes;
+      user.allNotes.qty = user.allNotes.notes.length;
       user.archive.qty = user.archive.notes.length;
       const updatedUser = await user.save();
       res.status(201).json({
