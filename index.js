@@ -1,14 +1,18 @@
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
-
+const bodyParser = require('body-parser')
 const app = express();
 const PORT = process.env.PORT;
 
 app.use(express.json());
 app.set("json spaces", 4);
-app.use(express.urlencoded({ extended: true })); // support encoded bodies
+// app.use(express.urlencoded({ extended: true })); // support encoded bodies
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }))
 
+// parse application/json
+app.use(bodyParser.json())
 app.use(cors());
 
 const { connectDB } = require("./db/db.connect.js");
@@ -17,13 +21,14 @@ connectDB();
 
 const { DocsObj } = require("./utils");
 const { authV1 } = require("./routes/auth.routes");
+const { notesV1 } = require("./routes/notes.routes");
 
 app.get("/", (req, res) => {
   res.json({ ...DocsObj });
 });
 
 app.use("/auth", authV1);
-
+app.use("/user/notes", notesV1);
 /**
  * 404 Route Handler
  * Note: DO not MOVE. This should be the last route
