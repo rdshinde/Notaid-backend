@@ -23,6 +23,7 @@ const { DocsObj } = require("./utils");
 const { authV1 } = require("./routes/auth.routes");
 const { notesV1 } = require("./routes/notes.routes");
 const { archiveV1 } = require("./routes/archive.routes");
+const { trash, trashV1 } = require("./routes/trash.routes");
 
 app.get("/", (req, res) => {
   res.json({ ...DocsObj });
@@ -31,6 +32,7 @@ app.get("/", (req, res) => {
 app.use("/auth", authV1);
 app.use("/user/notes", notesV1);
 app.use("/user/archive", archiveV1);
+app.use("/user/trash", trashV1);
 /**
  * 404 Route Handler
  * Note: DO not MOVE. This should be the last route
