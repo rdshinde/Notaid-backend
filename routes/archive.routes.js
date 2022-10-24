@@ -61,7 +61,10 @@ archiveV1.route("/:id").delete(authVerify, async (req, res) => {
       );
       user.allNotes.notes = updatedAllNotes;
       user.archive.notes = updatedNotes;
-      user.trash.notes.push(note);
+      user.trash.notes.push({
+        ...note,
+        isInTrash: true,
+      });
       user.trash.qty = user.trash.notes.length;
       user.archive.qty = user.archive.notes.length;
       const updatedUser = await user.save();

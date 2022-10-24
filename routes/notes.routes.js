@@ -88,7 +88,10 @@ notesV1
             (note) => note._id !== id
           );
           user.archive.notes = updatedArchiveNotes;
-          user.trash.notes.push(userNote);
+          user.trash.notes.push({
+            ...userNote,
+            isInTrash: true,
+          });
           user.trash.qty = user.trash.notes.length;
           user.allNotes.notes = updatedNotes;
           user.allNotes.qty = updatedNotes.length;

@@ -82,9 +82,15 @@ trashV1.route("/restore/:id").post(authVerify, async (req, res) => {
       const updatedNotes = user.trash.notes.filter((note) => note._id !== id);
       user.trash.notes = updatedNotes;
       if (note.isArchived) {
-        user.archive.notes.push(note);
+        user.archive.notes.push({
+          ...note,
+          isInTrash: false,
+        });
       } else {
-        user.allNotes.notes.push(note);
+        user.allNotes.notes.push({
+          ...note,
+          isInTrash: false,
+        });
       }
       user.trash.qty = user.trash.notes.length;
       const updatedUser = await user.save();
