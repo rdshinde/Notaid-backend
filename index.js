@@ -17,8 +17,6 @@ app.use(cors());
 
 const { connectDB } = require("./db/db.connect.js");
 
-connectDB();
-
 const { DocsObj } = require("./utils");
 const { authV1 } = require("./api/auth.routes");
 const { notesV1 } = require("./api/notes.routes");
@@ -59,8 +57,8 @@ app.use((err, req, res, next) => {
     errorMessage: err.message,
   });
 });
-
-app.listen(PORT, () => {
-  console.log(`Listening on port ${PORT}`);
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Listening on port ${PORT}`);
+  });
 });
-
