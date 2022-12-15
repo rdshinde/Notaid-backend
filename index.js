@@ -20,11 +20,11 @@ const { connectDB } = require("./db/db.connect.js");
 connectDB();
 
 const { DocsObj } = require("./utils");
-const { authV1 } = require("./routes/auth.routes");
-const { notesV1 } = require("./routes/notes.routes");
-const { archiveV1 } = require("./routes/archive.routes");
-const { trashV1 } = require("./routes/trash.routes");
-const { profileV1 } = require("./routes/profile.routes");
+const { authV1 } = require("./api/auth.routes");
+const { notesV1 } = require("./api/notes.routes");
+const { archiveV1 } = require("./api/archive.routes");
+const { trashV1 } = require("./api/trash.routes");
+const { profileV1 } = require("./api/profile.routes");
 
 app.get("/", (req, res) => {
   res.json({ ...DocsObj });
