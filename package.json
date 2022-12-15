@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Express backend for the modern note taking app.",
   "main": "index.js",
+  "engines": {
+    "node": "14.x"
+  },
   "scripts": {
     "start": "nodemon index.js",
     "heroku-postbuild": "npm install",
